@@ -1,0 +1,31 @@
+version: "2"
+services:
+  baseimage:
+    image: sgn0/baseimage
+    build: baseimage
+  java:
+    image: sgn0/java
+    build: java
+    depends_on:
+      - baseimage
+  jetty:
+    image: sgn0/jetty
+    build: jetty
+    ports:
+      - "8080:8080"
+    depends_on:
+      - java
+  nginx:
+    image: sgn0/nginx
+    build: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - baseimage
+  uwsgi:
+    image: sgn0/uwsgi
+    build: uwsgi
+    ports:
+      - "80:80"
+    depends_on:
+      - baseimage

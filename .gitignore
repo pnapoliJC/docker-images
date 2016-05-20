@@ -1,0 +1,10 @@
+# OS X
+.DS_Store
+
+# python
+*.pyc
+
+# vim
+[._]*.s[a-w][a=z]
+[._]s[a-w][a=z]
+*~
