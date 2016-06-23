@@ -1,0 +1,4 @@
+#!/bin/sh
+HOME=/opt/kafka-manager-${KAFKA_MANAGER_VERSION}
+cd $HOME
+exec bin/kafka-manager -Dconfig.file=conf/application.conf

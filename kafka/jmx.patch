@@ -1,0 +1,52 @@
+--- a/core/src/main/scala/kafka/log/Log.scala
++++ b/core/src/main/scala/kafka/log/Log.scala
+@@ -23,6 +23,7 @@
+ import kafka.metrics.KafkaMetricsGroup
+ import kafka.server.{BrokerTopicStats, FetchDataInfo, LogOffsetMetadata}
+ import java.io.{File, IOException}
++import java.util
+ import java.util.concurrent.{ConcurrentNavigableMap, ConcurrentSkipListMap}
+ import java.util.concurrent.atomic._
+ import java.text.NumberFormat
+@@ -31,6 +32,7 @@
+ import org.apache.kafka.common.record.TimestampType
+ 
+ import scala.collection.JavaConversions
++import scala.collection.JavaConverters._
+ import com.yammer.metrics.core.Gauge
+ import org.apache.kafka.common.utils.Utils
+ 
+@@ -133,6 +135,24 @@
+     },
+     tags)
+ 
++  newGauge("LogSegments",
++    new Gauge[util.List[String]] {
++      def value = {
++        val list = logSegments.toSeq.map { seg =>
++          s"baseOffset=${seg.baseOffset}, created=${seg.created}, logSize=${seg.size}, indexSize=${seg.index.sizeInBytes()}"
++        }
++        // Explicitly returning Java list to support JMX clients that don't have Scala runtime in the classpath
++        new util.ArrayList[String](list.asJava)
++      }
++    },
++    tags)
++
++  newGauge("Directory",
++    new Gauge[String] {
++      def value = dir.getAbsolutePath
++    },
++    tags)
++
+   /** The name of this log */
+   def name  = dir.getName()
+ 
+@@ -890,6 +910,8 @@
+     removeMetric("LogStartOffset", tags)
+     removeMetric("LogEndOffset", tags)
+     removeMetric("Size", tags)
++    removeMetric("LogSegments", tags)
++    removeMetric("Directory", tags)
+   }
+   /**
+    * Add the given segment to the segments in this log. If this segment replaces an existing segment, delete it.

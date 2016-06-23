@@ -1,0 +1,11 @@
+#!/bin/ash
+if [[ ! -z $ZOOKEEPER_ID ]]; then
+    echo $ZOOKEEPER_ID >/var/zookeeper/myid
+fi
+if [[ ! -z $ZOOKEEPER_SERVERS ]]; then
+    sed -i '/^server\./d' $ZK_HOME/conf/zoo.cfg
+    echo $ZOOKEEPER_SERVERS |
+        tr , '\n' |
+        awk '{print "server." NR "=" $1 ":2888:3888"}' >> $ZK_HOME/conf/zoo.cfg
+fi
+exec $ZK_HOME/bin/zkServer.sh start-foreground

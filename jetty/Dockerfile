@@ -21,6 +21,7 @@ ENV JETTY_GPG_KEYS \
        5DE533CB43DAF8BC3E372283E7AE839CD7C58886
 RUN set -xe \
     && apk --no-cache -t .downloadDeps add \
+        curl \
         gnupg1 \
         tar \
     && curl -sfSL "$JETTY_TGZ_URL" -o jetty.tar.gz \
@@ -53,7 +54,8 @@ RUN set -xe \
     && mkdir -p "$JETTY_RUN" "$TMPDIR" \
     && chown -R jetty:jetty "$JETTY_RUN" "$TMPDIR"
 
-COPY run-jetty /etc/service/jetty/run
+COPY jetty /usr/bin/jetty
 
 EXPOSE 8080
 WORKDIR /
+CMD ["/usr/bin/jetty"]

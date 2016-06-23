@@ -22,6 +22,11 @@ services:
       - "80:80"
     depends_on:
       - baseimage
+  python:
+    image: sgn0/python
+    build: python
+    depends_on:
+      - baseimage
   uwsgi:
     image: sgn0/uwsgi
     build: uwsgi
@@ -29,3 +34,28 @@ services:
       - "80:80"
     depends_on:
       - baseimage
+  zookeeper:
+    image: sgn0/zookeeper
+    build: zookeeper
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    volumes:
+      - /var/zookeeper:/var/zookeeper
+    depends_on:
+      - java
+  kafka:
+    image: sgn0/kafka
+    build: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - java
+  kafka-manager:
+    image: sgn0/kafka-manager
+    build: kafka-manager
+    ports:
+      - "9000:9000"
+    depends_on:
+      - java

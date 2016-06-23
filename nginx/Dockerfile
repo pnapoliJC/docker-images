@@ -2,14 +2,16 @@ FROM sgn0/baseimage
 MAINTAINER Jesus Lopez, jesus@sgn.com
 
 # nginx
-RUN NGINX_VERSION=1.10.1-r1 \
-    set -ex; \
-    apk add --no-cache nginx@edge==${NGINX_VERSION}
+RUN set -ex; \
+    apk --no-cache -q add nginx
 
-COPY service /etc/service/
 COPY conf /etc/nginx/
 COPY bin /usr/sbin/
 
 RUN set -ex; \
     ln -s /usr/sbin/nginx_ensite /usr/sbin/nginx_dissite; \
     nginx_ensite default
+
+EXPOSE 80
+
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
