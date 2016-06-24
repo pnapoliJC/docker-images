@@ -59,3 +59,8 @@ services:
       - "9000:9000"
     depends_on:
       - java
+  couchbase:
+    image: sgn0/couchbase
+    build: couchbase
+    ports:
+      - "8091:8091"
