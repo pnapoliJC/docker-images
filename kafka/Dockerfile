@@ -25,7 +25,9 @@ RUN KAFKA_VERSION=0.10.0.0 \
 
 ENV KAFKA_HOME=/opt/kafka
 RUN set -ex; \
-    apk --no-cache -q add bash
+    apk --no-cache -qXhttp://dl-cdn.alpinelinux.org/alpine/edge/testing add bash java-snappy snappy; \
+    rm /opt/kafka/libs/snappy-java-1.1.2.4.jar; \
+    ln -s /usr/share/java/snappy-java.jar /opt/kafka/libs/snappy-java-1.1.2.4.jar
 
 COPY bin /usr/bin/
 VOLUME ["/var/kafka"]
