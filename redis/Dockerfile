@@ -1,5 +1,6 @@
 FROM redis:3.2.5-alpine
-MAINTAINER Paul Ashdown, paul@sgn.com
+
+LABEL maintainer="Paul Ashdown, paul@jamcity.com"
 
 COPY redis.conf /usr/local/etc/redis/redis.conf
 RUN set -x; \

@@ -69,3 +69,13 @@ services:
     build: redis
     ports:
       - "6379:6379"
+  dynamodb:
+    image: sgn0/dynamodb
+    build: dynamodb
+    ports:
+      - "8000:8000"
+  minio:
+    image: sgn0/minio
+    build: minio
+    ports:
+      - "9000:9000"
