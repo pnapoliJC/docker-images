@@ -1,0 +1,3 @@
+#!/bin/ash
+cd $JETTY_BASE
+exec java -jar ${JETTY_DEBUG:+-Xdebug -agentlib:jdwp=transport=dt_socket,address=5005,server=y} "-Djava.io.tmpdir=$TMPDIR" "$JETTY_HOME/start.jar" "$@"
