@@ -17,9 +17,10 @@ RUN CB_USER=root \
     set -ex; \
     ./start-couchbase.sh; \
     wait-for-it.sh localhost:8091 -s -t 90; \
-    couchbase-cli cluster-init -clocalhost --cluster-ramsize=256 --cluster-index-ramsize=256 --cluster-username=$CB_USER --cluster-password=$CB_PASSWORD --services=data,index,query --index-storage-setting=memopt; \
-    couchbase-cli bucket-create -clocalhost -u$CB_USER -p$CB_PASSWORD --bucket=default --bucket-type=couchbase --bucket-ramsize=128 --bucket-replica=0 --enable-flush=1 --wait; \
-    couchbase-cli bucket-create -clocalhost -u$CB_USER -p$CB_PASSWORD --bucket=admin --bucket-type=couchbase --bucket-ramsize=128 --bucket-replica=0 --enable-flush=1 --wait; \
+    couchbase-cli cluster-init -clocalhost --cluster-ramsize=1024 --cluster-index-ramsize=512 --cluster-username=$CB_USER --cluster-password=$CB_PASSWORD --services=data,index,query --index-storage-setting=memopt; \
+    couchbase-cli bucket-create -clocalhost -u$CB_USER -p$CB_PASSWORD --bucket=default --bucket-type=couchbase --bucket-ramsize=512 --bucket-replica=0 --enable-flush=1 --wait; \
+    couchbase-cli bucket-create -clocalhost -u$CB_USER -p$CB_PASSWORD --bucket=admin --bucket-type=couchbase --bucket-ramsize=256 --bucket-replica=0 --enable-flush=1 --wait; \
+    couchbase-cli bucket-create -clocalhost -u$CB_USER -p$CB_PASSWORD --bucket=edms --bucket-type=couchbase --bucket-ramsize=256 --bucket-replica=0 --enable-flush=1 --wait; \
     couchbase-server -k; \
     sleep 15; \
     tar czpf couchbase.tgz -C /opt/couchbase/var --exclude=lib/couchbase/logs .; \
